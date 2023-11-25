@@ -1,0 +1,6 @@
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost/asyncalchemy
+SECRET=secret
+FIRST_SUPERUSER_EMAIL=admin@mail.com
+FIRST_SUPERUSER_PASSWORD=adminpassword
+FIRST_SUPERUSER_NAME=adminname
+FIRST_SUPERUSER_LAST_NAME=adminlastname
