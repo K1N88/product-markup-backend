@@ -6,7 +6,7 @@ from app.core.db import Base
 
 class Dealer(Base):
     name = Column(String(100), unique=True, nullable=False)
-    # dealer_price = relationship('DealerPrice', cascade='delete')
+    dealer_price = relationship('DealerPrice', cascade='delete')
 
 
 class DealerPrice(Base):

@@ -1,16 +1,15 @@
 from datetime import date
 from typing import Optional
 
-from pydantic import BaseModel, Extra, Field
+from pydantic import BaseModel, Field
 
 
 class DealerDB(BaseModel):
     id: int
-    name: str = Field(..., min_length=2, max_length=100, title='Имя дилера')
+    name: str
 
-
-class DealersCreate(BaseModel):
-    data: list[DealerDB]
+    class Config:
+        orm_mode = True
 
 
 class DealerPriceCreate(BaseModel):
