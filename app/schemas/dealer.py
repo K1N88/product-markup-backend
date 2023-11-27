@@ -16,7 +16,7 @@ class DealerPriceCreate(BaseModel):
     product_key: int
     price: float = Field(..., gt=0)
     product_url: Optional[str] = Field(..., max_length=1000)
-    product_name: str = Field(..., min_length=2, max_length=1000,)
+    product_name: str = Field(..., min_length=2, max_length=1000)
     date: date
     dealer_id: int
 
