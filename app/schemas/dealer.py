@@ -20,5 +20,9 @@ class DealerPriceCreate(BaseModel):
     date: date
     dealer_id: int
 
+
+class DealerPriceDB(DealerPriceCreate):
+    id: int
+
     class Config:
         orm_mode = True
