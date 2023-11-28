@@ -1,8 +1,8 @@
 """commit1
 
-Revision ID: 3b26ccfae8e8
+Revision ID: f9f02fed5e6c
 Revises: 
-Create Date: 2023-11-28 22:14:08.085646
+Create Date: 2023-11-28 23:26:29.645144
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '3b26ccfae8e8'
+revision = 'f9f02fed5e6c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -93,7 +93,7 @@ def upgrade():
     sa.Column('идентификатор товара', sa.Integer(), nullable=True),
     sa.Column('идентификатор продукта из рекомендации', sa.Integer(), nullable=True),
     sa.Column('дата обновления', sa.DateTime(), nullable=True),
-    sa.Column('статус разметки', sa.Enum('YES', 'NO', 'HOLD', name='status'), nullable=True),
+    sa.Column('статус разметки', sa.Enum('YES', 'NO', 'HOLD', name='choice'), nullable=True),
     sa.ForeignKeyConstraint(['идентификатор продукта из рекомендации'], ['markup.id'], ),
     sa.ForeignKeyConstraint(['идентификатор товара'], ['productdealerkey.id'], ),
     sa.PrimaryKeyConstraint('id')

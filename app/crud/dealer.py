@@ -1,3 +1,6 @@
+from typing import Optional, List
+
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
@@ -20,6 +23,7 @@ class CRUDDealer(CRUDBase):
         await session.commit()
         return db_objs
 
+
 class CRUDDealerPrice(CRUDBase):
 
     async def get_product_by_dealer(
@@ -34,4 +38,4 @@ class CRUDDealerPrice(CRUDBase):
 
 
 dealer_crud = CRUDDealer(Dealer)
-dealerprice_crud = CRUDBase(DealerPrice)
+dealerprice_crud = CRUDDealerPrice(DealerPrice)

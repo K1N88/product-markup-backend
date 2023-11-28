@@ -5,12 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.dealer import dealer_crud
 from app.core.db import get_async_session
-from app.schemas.dealer import DealerPriceCreate, DealerDB
+from app.schemas.dealer import DealerDB
 from app.core.user import current_user
-from app.core.setup_logger import setup_logger
 
-
-logger = setup_logger()
 
 router = APIRouter()
 
