@@ -26,6 +26,18 @@ async def get_statistic(
     return statistic
 
 
+@router.post(
+    "/statistic",
+    response_model=StatisticDB,
+    dependencies=[Depends(current_user)]
+)
+async def create_statistic(
+    product_in: ProductCreate,
+    session: AsyncSession = Depends(get_async_session),
+):
+    return await statistic_crud.create(product_in, session)
+
+
 @router.get(
     '/',
     response_model=List[MarkupDB],
