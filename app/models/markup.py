@@ -1,8 +1,14 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Integer, ForeignKey, Float
+from sqlalchemy import Column, DateTime, Integer, ForeignKey, Float, Enum
 
 from app.core.db import Base
+
+
+class Status(str, Enum):
+    YES = 'да'
+    NO = 'нет'
+    HOLD = 'отложить'
 
 
 class Markup(Base):
@@ -20,4 +26,5 @@ class Statistic(Base):
                  ForeignKey('productdealerkey.id'))
     markup = Column('идентификатор продукта из рекомендации', Integer,
                     ForeignKey('markup.id'), nullable=True, default=None)
-    last_update = Column('дата hfpvtnrb', DateTime, default=datetime.now)
+    last_update = Column('дата обновления', DateTime, default=datetime.now)
+    status = Column('статус разметки', Status)
