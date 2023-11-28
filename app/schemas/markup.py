@@ -3,6 +3,8 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from app.models.markup import Status
+
 
 class MarkupDB(BaseModel):
     id: int
@@ -19,8 +21,9 @@ class MarkupDB(BaseModel):
 class StatisticDB(BaseModel):
     id: int
     key: int
-    markup: int
+    markup: Optional[int]
     last_update: datetime
+    status: Status
 
     class Config:
         orm_mode = True
