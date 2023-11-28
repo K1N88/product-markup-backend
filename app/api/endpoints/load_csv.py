@@ -1,6 +1,7 @@
 import csv
 
 from tqdm import tqdm
+from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -11,6 +12,8 @@ from app.models import Dealer, DealerPrice, Product, ProductDealerKey
 
 
 logger = setup_logger()
+
+router = APIRouter()
 
 
 @router.post(
