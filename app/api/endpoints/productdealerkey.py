@@ -2,12 +2,10 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_async_session
-from app.crud.base import CRUDBase
-from app.models.product import Product
-from app.models.productdealerkey import ProductDealerKey
-from app.models.dealer import Dealer
 from app.crud.productdealerkey import productdealerkey_crud
-from app.schemas.productdealerkey import ProductDealerKeyCreate, ProductDealerKeyDB
+from app.schemas.productdealerkey import (ProductDealerKeyCreate,
+                                          ProductDealerKeyDB)
+
 
 router = APIRouter()
 
@@ -21,6 +19,5 @@ async def create_product(
 
 
 @router.get("/", response_model=list[ProductDealerKeyDB])
-async def read_products(
-    session: AsyncSession = Depends(get_async_session),):
+async def read_products(session: AsyncSession = Depends(get_async_session),):
     return await productdealerkey_crud.get_multi(session)
