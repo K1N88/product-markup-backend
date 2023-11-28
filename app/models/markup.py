@@ -26,5 +26,5 @@ class Statistic(Base):
                  ForeignKey('productdealerkey.id'))
     markup = Column('идентификатор продукта из рекомендации', Integer,
                     ForeignKey('markup.id'), nullable=True, default=None)
-    last_update = Column('дата обновления', DateTime, default=datetime.now)
+    last_update = Column('дата обновления', DateTime)
     status = Column('статус разметки', Status)
