@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
-from app.models import Dealer
+from app.models import Dealer, DealerPrice
 
 
 class CRUDDealer(CRUDBase):
@@ -20,5 +20,18 @@ class CRUDDealer(CRUDBase):
         await session.commit()
         return db_objs
 
+class CRUDDealerPrice(CRUDBase):
+
+    async def get_product_by_dealer(
+        self,
+        dealer: Dealer,
+        session: AsyncSession
+    ) -> Optional[List[DealerPrice]]:
+        db_objs = await session.execute(select(self.model).where(
+            self.model.dealer_id == dealer.id
+        ))
+        return db_objs.scalars().all()
+
 
 dealer_crud = CRUDDealer(Dealer)
+dealerprice_crud = CRUDBase(DealerPrice)
