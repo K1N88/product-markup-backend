@@ -7,6 +7,7 @@ from app.crud.dealer import dealerprise_crud
 from app.core.db import get_async_session
 from app.schemas.dealer import DealerPriceDB
 from app.core.user import current_user
+from app.api.validators import check_dealer_exists
 
 
 router = APIRouter()
@@ -22,4 +23,18 @@ async def get_all_dealer_price(
 ):
     dealer_price = await dealerprise_crud.get_multi(session)
     return dealer_price
-  
+
+
+@router.get(
+    '/{dealer_id}',
+    response_model=List[DealerPriceDB],
+    response_model_exclude_none=True,
+    dependencies=[Depends(current_user)],
+)
+async def get_dealer_price(
+    dealer_id: int,
+    session: AsyncSession = Depends(get_async_session),
+):
+    dealer = await check_dealer_exists(dealer_id, session)
+    prices = await dealerprise_crud.get_product_by_dealer(dealer, session)
+    return prices
