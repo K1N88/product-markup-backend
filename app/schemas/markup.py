@@ -22,7 +22,7 @@ class StatisticDB(BaseModel):
     id: int
     key: int
     markup: Optional[int]
-    last_update: datetime
+    last_update: datetime = datetime.now
     status: Status
 
     class Config:
