@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from app.models.markup import Status
+from app.models.markup import Choice
 
 
 class MarkupCreate(BaseModel):
@@ -24,8 +24,8 @@ class MarkupDB(MarkupCreate):
 class StatisticCreate(BaseModel):
     key: int
     markup: Optional[int]
-    last_update: datetime = datetime.now
-    status: Status
+    last_update: datetime
+    state: Choice
 
 
 class StatisticDB(StatisticCreate):

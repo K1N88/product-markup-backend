@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_async_session
 from app.crud.product import product_crud
-from app.schemas.product import ProductCreate, ProductUpdate, ProductDB
+from app.schemas.product import ProductCreate, ProductDB
 from app.core.user import current_user
 
 
