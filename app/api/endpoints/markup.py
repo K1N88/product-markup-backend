@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.dealer import markup_crud, statistic_crud
 from app.core.db import get_async_session
-from app.schemas.markup import MarkupDB, StatisticDB
+from app.schemas.markup import MarkupCreate, MarkupDB, StatisticCreate, StatisticDB
 from app.core.user import current_user
 
 
@@ -32,7 +32,7 @@ async def get_statistic(
     dependencies=[Depends(current_user)]
 )
 async def create_statistic(
-    product_in: ProductCreate,
+    product_in: List[StatisticCreate],
     session: AsyncSession = Depends(get_async_session),
 ):
     return await statistic_crud.create(product_in, session)
@@ -56,7 +56,7 @@ async def get_recomendations(
     dependencies=[Depends(current_user)],
 )
 async def create_recomendations(
-    data: List[MarkupDB],
+    data: List[MarkupCreate],
     session: AsyncSession = Depends(get_async_session),
 ):
     await markup_crud.create_multi(data, session)
