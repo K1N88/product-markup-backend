@@ -7,7 +7,7 @@ from app.core.init_db import create_first_superuser
 
 
 origins = [
-    "http://localhost",
+    "http://frontend:3000",
 ]
 
 app = FastAPI(title=settings.app_title)
