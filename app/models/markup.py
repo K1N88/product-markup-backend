@@ -1,11 +1,12 @@
 from datetime import datetime
+from enum import Enum as PythonEnum
 
 from sqlalchemy import Column, DateTime, Integer, ForeignKey, Float, Enum
 
 from app.core.db import Base
 
 
-class Status(str, Enum):
+class Status(PythonEnum):
     YES = 'да'
     NO = 'нет'
     HOLD = 'отложить'
@@ -27,4 +28,4 @@ class Statistic(Base):
     markup = Column('идентификатор продукта из рекомендации', Integer,
                     ForeignKey('markup.id'), nullable=True, default=None)
     last_update = Column('дата обновления', DateTime)
-    status = Column('статус разметки', Status)
+    status = Column('статус разметки', Enum(Status))
