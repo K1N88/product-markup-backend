@@ -15,18 +15,6 @@ router = APIRouter()
 
 
 @router.get(
-    '/markup',
-    response_model=List[MarkupDB],
-    dependencies=[Depends(current_user)],
-)
-async def get_all_recomendations(
-    session: AsyncSession = Depends(get_async_session),
-):
-    recomendations = await markup_crud.get_multi(session)
-    return recomendations
-
-
-@router.get(
     '/statistic',
     response_model=List[StatisticDB],
     dependencies=[Depends(current_user)],
@@ -36,4 +24,28 @@ async def get_statistic(
 ):
     statistic = await statistic_crud.get_multi(session)
     return statistic
-  
+
+
+@router.get(
+    '/',
+    response_model=List[MarkupDB],
+    dependencies=[Depends(current_user)],
+)
+async def get_recomendations(
+    session: AsyncSession = Depends(get_async_session),
+):
+    recomendations = await markup_crud.get_multi(session)
+    return recomendations
+
+
+@router.post(
+    '/',
+    response_model=List[MarkupDB],
+    dependencies=[Depends(current_user)],
+)
+async def create_recomendations(
+    data: List[MarkupDB],
+    session: AsyncSession = Depends(get_async_session),
+):
+    await markup_crud.create_multi(data, session)
+    return data
