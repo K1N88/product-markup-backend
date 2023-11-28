@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
-from app.models import Dealer
+from app.models import Dealer, DealerPrice
 
 
 class CRUDDealer(CRUDBase):
@@ -22,3 +22,4 @@ class CRUDDealer(CRUDBase):
 
 
 dealer_crud = CRUDDealer(Dealer)
+dealerprice_crud = CRUDBase(DealerPrice)
