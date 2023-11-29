@@ -31,9 +31,10 @@ class CRUDDealerPrice(CRUDBase):
         dealer: Dealer,
         session: AsyncSession
     ) -> Optional[List[DealerPrice]]:
-        db_objs = await session.execute(select(self.model).where(
-            self.model.dealer_id == dealer.id
-        ))
+        db_objs = await session.execute(
+            select(self.model)
+            .where(self.model.dealer_id == dealer.id)
+        )
         return db_objs.scalars().all()
 
 
