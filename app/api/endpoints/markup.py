@@ -35,3 +35,18 @@ async def create_recomendations(
 ):
     await markup_crud.create_multi(data, session)
     return data
+
+
+@router.get(
+    '/{dealer_price_id}',
+    response_model=List[MarkupDB],
+    response_model_exclude_none=True,
+    dependencies=[Depends(current_user)],
+)
+async def get_recomendations_by_dealer_price(
+    dealer_price_id: int,
+    session: AsyncSession = Depends(get_async_session),
+):
+    dealer_price = await check_dealer_price_exists(dealer_price_id, session)
+    markup = await markup_crud.get_markup_by_dealer_price(dealer_price, session)
+    return markup

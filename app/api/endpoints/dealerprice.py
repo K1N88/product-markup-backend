@@ -36,5 +36,5 @@ async def get_dealer_price(
     session: AsyncSession = Depends(get_async_session),
 ):
     dealer = await check_dealer_exists(dealer_id, session)
-    prices = await dealerprice_crud.get_product_by_dealer(dealer, session)
+    prices = await dealerprice_crud.get_all_products_by_dealer(dealer, session)
     return prices
