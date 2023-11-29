@@ -1,8 +1,8 @@
 """commit1
 
-Revision ID: f9f02fed5e6c
+Revision ID: 8bb01ab6ba8f
 Revises: 
-Create Date: 2023-11-28 23:26:29.645144
+Create Date: 2023-11-29 23:47:01.601610
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f9f02fed5e6c'
+revision = '8bb01ab6ba8f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,17 +27,16 @@ def upgrade():
     op.create_table('product',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('артикул товара', sa.String(length=100), nullable=False),
-    sa.Column('код товара', sa.Integer(), nullable=True),
+    sa.Column('код товара', sa.String(length=100), nullable=True),
     sa.Column('название товара', sa.String(length=1000), nullable=True),
-    sa.Column('стоимость', sa.Float(), nullable=True),
-    sa.Column('рекомендованная минимальная цена', sa.Float(), nullable=True),
-    sa.Column('рекомендованная цена', sa.Float(), nullable=True),
-    sa.Column('категория товара', sa.Integer(), nullable=True),
-    sa.Column('названиет товара на Озоне', sa.String(length=1000), nullable=True),
+    sa.Column('стоимость', sa.String(length=100), nullable=True),
+    sa.Column('рекомендованная цена', sa.String(length=100), nullable=True),
+    sa.Column('категория товара', sa.String(length=100), nullable=True),
+    sa.Column('название товара на Озоне', sa.String(length=1000), nullable=True),
     sa.Column('название товара в 1C', sa.String(length=1000), nullable=True),
     sa.Column('название товара на Wildberries', sa.String(length=1000), nullable=True),
-    sa.Column('описание для Озон', sa.Integer(), nullable=True),
-    sa.Column('артикул для Wildberries', sa.Integer(), nullable=True),
+    sa.Column('описание для Озон', sa.String(length=100), nullable=True),
+    sa.Column('артикул для Wildberries', sa.String(length=100), nullable=True),
     sa.Column('артикул для Wildberries td', sa.String(length=100), nullable=True),
     sa.Column('артикул для Яндекс.Маркета', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id'),
@@ -57,45 +56,44 @@ def upgrade():
     op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
     op.create_table('dealerprice',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('уникальный номер позиции', sa.Integer(), nullable=False),
-    sa.Column('цена', sa.Float(), nullable=False),
+    sa.Column('product_key', sa.String(length=1000), nullable=False),
+    sa.Column('цена', sa.String(length=1000), nullable=False),
     sa.Column('адрес страницы, откуда собраны данные', sa.String(length=1000), nullable=True),
     sa.Column('заголовок продаваемого товара', sa.String(length=1000), nullable=False),
     sa.Column('дата получения информации', sa.Date(), nullable=False),
-    sa.Column('идентификатор дилера', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['идентификатор дилера'], ['dealer.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('уникальный номер позиции', 'идентификатор дилера', name='product_dealer')
-    )
-    op.create_table('productdealerkey',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('идентификатор товара', sa.Integer(), nullable=True),
-    sa.Column('идентификатор дилера', sa.Integer(), nullable=True),
-    sa.Column('идентификатор продукта', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['идентификатор дилера'], ['dealer.id'], ),
-    sa.ForeignKeyConstraint(['идентификатор продукта'], ['product.id'], ),
-    sa.ForeignKeyConstraint(['идентификатор товара'], ['productdealerkey.id'], ),
+    sa.Column('dealer_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['dealer_id'], ['dealer.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('markup',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('идентификатор товара', sa.Integer(), nullable=True),
-    sa.Column('идентификатор продукта', sa.Integer(), nullable=True),
+    sa.Column('key', sa.Integer(), nullable=True),
+    sa.Column('product_id', sa.Integer(), nullable=True),
     sa.Column('дата рекомендации', sa.DateTime(), nullable=True),
     sa.Column('очередь', sa.Integer(), nullable=False),
     sa.Column('качество рекомендации', sa.Float(), nullable=False),
-    sa.ForeignKeyConstraint(['идентификатор продукта'], ['product.id'], ),
-    sa.ForeignKeyConstraint(['идентификатор товара'], ['productdealerkey.id'], ),
+    sa.ForeignKeyConstraint(['key'], ['dealerprice.id'], ),
+    sa.ForeignKeyConstraint(['product_id'], ['product.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('productdealerkey',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('key', sa.Integer(), nullable=True),
+    sa.Column('dealer_id', sa.Integer(), nullable=True),
+    sa.Column('product_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['dealer_id'], ['dealer.id'], ),
+    sa.ForeignKeyConstraint(['key'], ['dealerprice.id'], ),
+    sa.ForeignKeyConstraint(['product_id'], ['product.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('statistic',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('идентификатор товара', sa.Integer(), nullable=True),
-    sa.Column('идентификатор продукта из рекомендации', sa.Integer(), nullable=True),
+    sa.Column('key', sa.Integer(), nullable=True),
+    sa.Column('markup', sa.Integer(), nullable=True),
     sa.Column('дата обновления', sa.DateTime(), nullable=True),
     sa.Column('статус разметки', sa.Enum('YES', 'NO', 'HOLD', name='choice'), nullable=True),
-    sa.ForeignKeyConstraint(['идентификатор продукта из рекомендации'], ['markup.id'], ),
-    sa.ForeignKeyConstraint(['идентификатор товара'], ['productdealerkey.id'], ),
+    sa.ForeignKeyConstraint(['key'], ['dealerprice.id'], ),
+    sa.ForeignKeyConstraint(['markup'], ['markup.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
@@ -104,8 +102,8 @@ def upgrade():
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('statistic')
-    op.drop_table('markup')
     op.drop_table('productdealerkey')
+    op.drop_table('markup')
     op.drop_table('dealerprice')
     op.drop_index(op.f('ix_user_email'), table_name='user')
     op.drop_table('user')

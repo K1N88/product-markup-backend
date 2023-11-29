@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 
 from tqdm import tqdm
 from typing import List
@@ -8,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.core.setup_logger import setup_logger
-from app.models import Dealer, DealerPrice, Product, ProductDealerKey
+from app.models import Dealer, DealerPrice, Product  # ProductDealerKey
 
 
 logger = setup_logger()
@@ -27,14 +28,14 @@ async def load_csv(
     logger.info('старт загрузки данных')
     result = []
 
-    with open('csv/dealer.csv', encoding='utf-8') as f:
-        reader = csv.reader(f)
+    with open('csv/marketing_dealer.csv', encoding='utf-8') as f:
+        reader = csv.reader(f, delimiter=';')
         next(reader)
         count = 0
         for row in tqdm(reader):
             try:
                 id, name = row
-                db_obj = Dealer(id=id, name=name)
+                db_obj = Dealer(id=int(id), name=name)
                 session.add(db_obj)
                 await session.commit()
                 count += 1
@@ -44,20 +45,21 @@ async def load_csv(
         logger.info(message)
     result.append(message)
 
-    with open('csv/DealerPrice.csv', encoding='utf-8') as f:
-        reader = csv.reader(f)
+    with open('csv/marketing_dealerprice.csv', encoding='utf-8') as f:
+        reader = csv.reader(f, delimiter=';')
         next(reader)
         count = 0
         for row in tqdm(reader):
             try:
-                product_key, price, product_url, product_name, date, dealer_id = row
+                id, product_key, price, product_url, product_name, date, dealer_id = row
                 db_obj = DealerPrice(
+                    id=int(id),
                     product_key=product_key,
                     price=price,
                     product_url=product_url,
                     product_name=product_name,
-                    date=date,
-                    dealer_id=dealer_id,
+                    date=datetime.strptime(date, '%Y-%m-%d'),
+                    dealer_id=int(dealer_id),
                 )
                 session.add(db_obj)
                 await session.commit()
@@ -67,20 +69,20 @@ async def load_csv(
         message = f'количество объектов {DealerPrice} {count}'
         logger.info(message)
     result.append(message)
-    
-    with open('csv/Product.csv', encoding='utf-8') as f:
-        reader = csv.reader(f)
+
+    with open('csv/marketing_product.csv', encoding='utf-8') as f:
+        reader = csv.reader(f, delimiter=';')
         next(reader)
         count = 0
         for row in tqdm(reader):
             try:
-                article, ean_13, name, cost, min_recommended_price, recommended_price, category_id, ozon_name, name_1c, wb_name, ozon_article, wb_article, wb_article_td, ym_article = row
+                num, id, article, ean_13, name, cost, recommended_price, category_id, ozon_name, name_1c, wb_name, ozon_article, wb_article, ym_article, wb_article_td = row
                 db_obj = Product(
+                    id=int(id),
                     article=article,
                     ean_13=ean_13,
                     name=name,
                     cost=cost,
-                    min_recommended_price=min_recommended_price,
                     recommended_price=recommended_price,
                     category_id=category_id,
                     ozon_name=ozon_name,
@@ -100,17 +102,21 @@ async def load_csv(
         logger.info(message)
     result.append(message)
 
-    with open('csv/ProductDealerKey.csv', encoding='utf-8') as f:
-        reader = csv.reader(f)
+    return result
+
+'''
+    with open('csv/marketing_productdealerkey.csv', encoding='utf-8') as f:
+        reader = csv.reader(f, delimiter=';')
         next(reader)
         count = 0
         for row in tqdm(reader):
             try:
-                key, dealer_id, product_id = row
+                id, key, dealer_id, product_id = row
                 db_obj = ProductDealerKey(
+                    id=int(id),
                     key=key,
-                    dealer_id=dealer_id,
-                    product_id=product_id,
+                    dealer_id=int(dealer_id),
+                    product_id=int(product_id),
                 )
                 session.add(db_obj)
                 await session.commit()
@@ -119,6 +125,5 @@ async def load_csv(
                 logger.error(f'сбой {error} при сохранении {row} в модель {ProductDealerKey}', exc_info=True)
         message = f'количество объектов {ProductDealerKey} {count}'
         logger.info(message)
-    result.append(message)
-
-    return result
+    result.append(message) 
+    '''
