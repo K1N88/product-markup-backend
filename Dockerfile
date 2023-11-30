@@ -1,8 +1,7 @@
 FROM python:3.10-slim
-WORKDIR /app
+WORKDIR /project
 COPY ./requirements.txt .
 RUN python -m pip install --upgrade pip
 RUN pip3 install -r requirements.txt --no-cache-dir
-COPY app/ .
-COPY alembic/ .
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY app/ app/
+COPY alembic/ alembic/
