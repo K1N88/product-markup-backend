@@ -1,4 +1,3 @@
-from pydantic import BaseModel, Extra
 from typing import Optional
 
 
@@ -7,12 +6,13 @@ class ProductDealerKeyBase(BaseModel):
 
 
 class ProductDealerKeyCreate(ProductDealerKeyBase):
-    product_id: int
+    key: int
     dealer_id: int
-
-    class Config:
-        extra = Extra.forbid
+    product_id: int
 
 
 class ProductDealerKeyDB(ProductDealerKeyBase):
     id: int
+
+    class Config:
+        orm_mode = True

@@ -4,15 +4,15 @@ from pydantic import BaseModel, Extra
 class ProductBase(BaseModel):
     article: str
     name: str
-    cost: float
-    min_recommended_price: float
-    recommended_price: float
-    category_id: int
+    cost: str
+    min_recommended_price: str
+    recommended_price: str
+    category_id: str
     ozon_name: str
     name_1c: str
     wb_name: str
-    ozon_article: int
-    wb_article: int
+    ozon_article: str
+    wb_article: str
     wb_article_td: str
     ym_article: str
 
