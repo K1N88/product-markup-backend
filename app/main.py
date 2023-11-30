@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_pagination import add_pagination
 
 from app.api.routers import main_router
 from app.core.config import settings
@@ -19,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(main_router)
-
+add_pagination(app)
 
 @app.on_event('startup')
 async def startup():
