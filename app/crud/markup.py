@@ -10,6 +10,7 @@ from app.crud.productdealerkey import productdealerkey_crud
 from app.models import Markup, Statistic, DealerPrice
 from app.core.ml_prosept import prosept_predict
 
+
 class CRUDMarkup(CRUDBase):
 
     async def create_multi(
