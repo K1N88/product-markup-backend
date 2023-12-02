@@ -15,7 +15,6 @@ router = APIRouter()
 @router.get(
     '/',
     response_model=List[StatisticDB],
-    dependencies=[Depends(current_user)],
 )
 async def get_statistic(
     session: AsyncSession = Depends(get_async_session),
@@ -27,7 +26,6 @@ async def get_statistic(
 @router.post(
     "/",
     response_model=StatisticDB,
-    dependencies=[Depends(current_user)]
 )
 async def create_statistic(
     product_in: StatisticCreate,

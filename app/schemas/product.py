@@ -7,7 +7,6 @@ class ProductBase(BaseModel):
     article: str
     name: Optional[str]
     cost: Optional[str]
-    min_recommended_price: Optional[str]
     recommended_price: Optional[str]
     category_id: Optional[str]
     ozon_name: Optional[str]

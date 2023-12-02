@@ -16,7 +16,6 @@ router = APIRouter()
 @router.get(
     '/',
     response_model=Page[DealerDB],
-    dependencies=[Depends(current_user)]
 )
 async def get_all_dealers(session: AsyncSession = Depends(get_async_session)):
     dealers = await dealer_crud.get_multi(session)
@@ -26,7 +25,6 @@ async def get_all_dealers(session: AsyncSession = Depends(get_async_session)):
 @router.post(
     '/',
     response_model=List[DealerDB],
-    dependencies=[Depends(current_user)]
 )
 async def create_all_dealers(
     data: List[DealerDB],

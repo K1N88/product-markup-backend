@@ -17,7 +17,6 @@ router = APIRouter()
 @router.get(
     '/',
     response_model=Page[MarkupDB],
-    dependencies=[Depends(current_user)]
 )
 async def get_recomendations(
     session: AsyncSession = Depends(get_async_session)
@@ -29,7 +28,6 @@ async def get_recomendations(
 @router.post(
     '/',
     response_model=List[MarkupDB],
-    dependencies=[Depends(current_user)]
 )
 async def create_recomendations(
     session: AsyncSession = Depends(get_async_session)
@@ -42,7 +40,6 @@ async def create_recomendations(
     '/{dealer_price_id}',
     response_model=Page[MarkupDB],
     response_model_exclude_none=True,
-    dependencies=[Depends(current_user)]
 )
 async def get_recomendations_by_dealer_price(
     dealer_price_id: int,

@@ -14,7 +14,6 @@ router = APIRouter()
 @router.post(
     "/",
     response_model=ProductDB,
-    dependencies=[Depends(current_user)]
 )
 async def create_product(
     product_in: ProductCreate,
@@ -26,7 +25,6 @@ async def create_product(
 @router.get(
     "/",
     response_model=Page[ProductDB],
-    dependencies=[Depends(current_user)]
 )
 async def read_products(session: AsyncSession = Depends(get_async_session)):
     products = await product_crud.get_multi(session)

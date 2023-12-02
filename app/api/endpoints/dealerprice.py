@@ -15,7 +15,6 @@ router = APIRouter()
 @router.get(
     '/',
     response_model=Page[DealerPriceDB],
-    dependencies=[Depends(current_user)]
 )
 async def get_all_dealer_price(
     session: AsyncSession = Depends(get_async_session)
@@ -28,7 +27,6 @@ async def get_all_dealer_price(
     '/{dealer_id}',
     response_model=Page[DealerPriceDB],
     response_model_exclude_none=True,
-    dependencies=[Depends(current_user)]
 )
 async def get_dealer_price(
     dealer_id: int,

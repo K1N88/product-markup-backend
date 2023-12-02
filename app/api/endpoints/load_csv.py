@@ -20,7 +20,6 @@ router = APIRouter()
 @router.post(
     '/',
     response_model=List[str],
-    dependencies=[Depends(current_superuser)],
 )
 async def load_csv(
     session: AsyncSession = Depends(get_async_session),
