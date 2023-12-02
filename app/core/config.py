@@ -1,9 +1,9 @@
 from typing import Optional
 
-from pydantic import EmailStr, BaseSettings
+from pydantic import EmailStr, BaseConfig
 
 
-class Settings(BaseSettings):
+class Settings(BaseConfig):
     app_title: str = 'Product Markup'
     app_description: str = 'Приложение для автоматизации процесса сопоставления товаров'
     database_url: str = 'sqlite+aiosqlite:///./prosept.db'

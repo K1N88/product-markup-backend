@@ -4,11 +4,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
-from app.crud.dealerprice import dealerprice_crud
+from app.crud.dealer import dealerprice_crud
 from app.crud.product import product_crud
 from app.crud.productdealerkey import productdealerkey_crud
 from app.models import Markup, Statistic, DealerPrice
-from app.core.ml_prosept import prosept_predict
+from app.core.ml_procept import prosept_predict
 
 
 class CRUDMarkup(CRUDBase):
@@ -45,7 +45,7 @@ class CRUDMarkup(CRUDBase):
         session: AsyncSession,
     ) -> list[Markup]:
         obj_in = prosept_predict(
-            product = product_crud.get_multi(session)
+            product = product_crud.get_multi(session),
             dealerprice = dealerprice_crud.get_multi(session),
             productdealerkey = productdealerkey_crud.get_multi(session)
         )
