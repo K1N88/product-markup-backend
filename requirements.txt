@@ -10,9 +10,7 @@ psycopg2-binary==2.9.9
 tqdm==4.66.1
 gunicorn==21.2.0
 fastapi-pagination==0.12.13
-pandas == 1.5.2
-re == 2.2.1
-nltk
-sentence-transformers
-datetime
-warnings
+pandas==1.5.2
+re==2.2.1
+nltk==3.8.1
+sentence_transformers==2.2.2

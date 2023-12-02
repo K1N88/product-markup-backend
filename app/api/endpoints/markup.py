@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_pagination import Page, paginate
@@ -28,14 +26,13 @@ async def get_recomendations(
 
 @router.post(
     '/',
-    response_model=List[MarkupDB],
+    response_model=str,
     dependencies=[Depends(current_user)]
 )
 async def create_recomendations(
     session: AsyncSession = Depends(get_async_session)
 ):
-    predict = await markup_crud.create_predict(session)
-    return predict
+    return await markup_crud.create_predict(session)
 
 
 @router.get(
