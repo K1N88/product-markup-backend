@@ -32,11 +32,10 @@ async def get_recomendations(
     dependencies=[Depends(current_user)]
 )
 async def create_recomendations(
-    data: List[MarkupCreate],
     session: AsyncSession = Depends(get_async_session)
 ):
-    await markup_crud.create_multi(data, session)
-    return data
+    predict = await markup_crud.create_predict(session)
+    return predict
 
 
 @router.get(
