@@ -30,12 +30,13 @@ class CRUDDealerPrice(CRUDBase):
         self,
         dealer: Dealer,
         session: AsyncSession
-    ) -> Optional[List[DealerPrice]]:
-        db_objs = await session.execute(
-            select(self.model)
-            .where(self.model.dealer_id == dealer.id)
-        )
-        return db_objs.scalars().all()
+    ) -> Optional[List]:
+        stmt = select(self.model, Dealer.name).\
+            where(self.model.dealer_id == dealer.id).\
+            select_from(self.model).\
+            join(Dealer, self.model.dealer_id == Dealer.id)
+        db_objs = await session.execute(stmt)
+        return db_objs.fetchall()
 
 
 dealer_crud = CRUDDealer(Dealer)
