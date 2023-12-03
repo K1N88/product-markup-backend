@@ -6,7 +6,6 @@ uvicorn==0.17.6
 psycopg2-binary==2.9.9
 tqdm==4.66.1
 gunicorn==21.2.0
-fastapi-pagination==0.12.13
 pandas==1.5.2
 sentence_transformers==2.2.2
 asyncpg==0.29.0
