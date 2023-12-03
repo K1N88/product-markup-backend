@@ -21,7 +21,6 @@ async def get_all_dealer_price(
     session: AsyncSession = Depends(get_async_session)
 ):
     prices = await dealerprice_crud.get_multi(session)
-    print(prices[:10])
     return paginate(prices)
 
 
@@ -37,5 +36,4 @@ async def get_dealer_price(
 ):
     dealer = await check_exists(dealer_id, session, dealerprice_crud)
     prices = await dealerprice_crud.get_all_products_by_dealer(dealer, session)
-    print(prices[:10])
     return paginate(prices)
