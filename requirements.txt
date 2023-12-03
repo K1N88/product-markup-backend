@@ -12,3 +12,4 @@ gunicorn==21.2.0
 fastapi-pagination==0.7.0
 pandas==1.5.2
 sentence_transformers==2.2.2
+asyncpg==0.29.0
