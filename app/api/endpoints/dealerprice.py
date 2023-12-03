@@ -4,9 +4,9 @@ from fastapi_pagination import Page, paginate
 
 from app.crud.dealer import dealerprice_crud
 from app.core.db import get_async_session
-from app.schemas.dealer import DealerPriceDB
+from app.schemas.dealer import DealerPriceDB, DealerPriceDealerDB
 from app.core.user import current_user
-from app.api.validators import check_dealer_exists
+from app.api.validators import check_exists
 
 
 router = APIRouter()
@@ -20,13 +20,14 @@ router = APIRouter()
 async def get_all_dealer_price(
     session: AsyncSession = Depends(get_async_session)
 ):
-    dealer_price = await dealerprice_crud.get_multi(session)
-    return paginate(dealer_price)
+    prices = await dealerprice_crud.get_multi(session)
+    print(prices[:10])
+    return paginate(prices)
 
 
 @router.get(
     '/{dealer_id}',
-    response_model=Page[DealerPriceDB],
+    response_model=Page[DealerPriceDealerDB],
     response_model_exclude_none=True,
     dependencies=[Depends(current_user)]
 )
@@ -34,6 +35,7 @@ async def get_dealer_price(
     dealer_id: int,
     session: AsyncSession = Depends(get_async_session)
 ):
-    dealer = await check_dealer_exists(dealer_id, session)
+    dealer = await check_exists(dealer_id, session, dealerprice_crud)
     prices = await dealerprice_crud.get_all_products_by_dealer(dealer, session)
+    print(prices[:10])
     return paginate(prices)

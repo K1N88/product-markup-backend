@@ -37,10 +37,10 @@ async def load_csv(
                 id, name = row
                 db_obj = Dealer(id=int(id), name=name)
                 session.add(db_obj)
-                await session.commit()
                 count += 1
             except Exception as error:
                 logger.error(f'сбой {error} при сохранении {row} в модель {Dealer}', exc_info=True)
+        await session.commit()
         message = f'количество объектов {Dealer} {count}'
         logger.info(message)
     result.append(message)
@@ -62,10 +62,10 @@ async def load_csv(
                     dealer_id=int(dealer_id),
                 )
                 session.add(db_obj)
-                await session.commit()
                 count += 1
             except Exception as error:
                 logger.error(f'сбой {error} при сохранении {row} в модель {DealerPrice}', exc_info=True)
+        await session.commit()
         message = f'количество объектов {DealerPrice} {count}'
         logger.info(message)
     result.append(message)
@@ -94,10 +94,10 @@ async def load_csv(
                     ym_article=ym_article
                 )
                 session.add(db_obj)
-                await session.commit()
                 count += 1
             except Exception as error:
                 logger.error(f'сбой {error} при сохранении {row} в модель {Product}', exc_info=True)
+        await session.commit()
         message = f'количество объектов {Product} {count}'
         logger.info(message)
     result.append(message)
@@ -125,5 +125,5 @@ async def load_csv(
                 logger.error(f'сбой {error} при сохранении {row} в модель {ProductDealerKey}', exc_info=True)
         message = f'количество объектов {ProductDealerKey} {count}'
         logger.info(message)
-    result.append(message) 
+    result.append(message)
     '''

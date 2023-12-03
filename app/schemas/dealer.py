@@ -1,15 +1,18 @@
 from datetime import date
-from typing import Optional
+from typing import Optional, List, Tuple
 
 from pydantic import BaseModel, Field
 
 
-class DealerDB(BaseModel):
-    id: int
+class DealerBase(BaseModel):
     name: str
 
     class Config:
         orm_mode = True
+
+
+class DealerDB(DealerBase):
+    id: int
 
 
 class DealerPriceCreate(BaseModel):
@@ -26,3 +29,7 @@ class DealerPriceDB(DealerPriceCreate):
 
     class Config:
         orm_mode = True
+
+
+class DealerPriceDealerDB(DealerPriceDB):
+    data: List[Tuple[DealerPriceDB, str]]
