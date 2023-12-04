@@ -2,9 +2,10 @@ from typing import Optional, List
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 from app.crud.base import CRUDBase
-from app.models import Dealer, DealerPrice
+from app.models import Dealer, DealerPrice, Statistic
 
 
 class CRUDDealer(CRUDBase):
@@ -25,16 +26,49 @@ class CRUDDealer(CRUDBase):
 
 
 class CRUDDealerPrice(CRUDBase):
-
+    '''
     async def get_all_products_by_dealer(
         self,
         dealer: Dealer,
         session: AsyncSession
     ) -> Optional[List]:
         stmt = select(self.model, Dealer.name).\
-            where(self.model.dealer_id == dealer.id)
+            where(self.model.dealer_id == dealer.id).\
+            where(self.model.dealer_id == Dealer.id)
         db_objs = await session.execute(stmt)
-        return db_objs.all()
+
+        result = []
+        for item in db_objs:
+            price, name = item
+            result.append(
+                {
+                    'dealerprice': price.__dict__,
+                    'dealer': name,
+                }
+            )
+        return result
+    '''
+    async def get_all_products_by_dealer(
+        self,
+        dealer: Dealer,
+        session: AsyncSession
+    ) -> Optional[List]:
+        stmt = select(self.model, Dealer.name, Statistic.state).\
+            join(Dealer).\
+            outerjoin(Statistic).\
+            filter(self.model.dealer_id == dealer.id)
+        db_objs = await session.execute(stmt)
+        result = []
+        for item in db_objs:
+            price, name, state = item
+            result.append(
+                {
+                    'dealerprice': price.__dict__,
+                    'dealer': name,
+                    'state': state
+                }
+            )
+        return result
 
 
 dealer_crud = CRUDDealer(Dealer)

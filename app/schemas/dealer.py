@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 
 class DealerBase(BaseModel):
-    name: str
+    dealer: str
 
     class Config:
         orm_mode = True
@@ -31,8 +31,9 @@ class DealerPriceDB(DealerPriceCreate):
         orm_mode = True
 
 
-class DealerPriceDealerDB(BaseModel):
-    data: Tuple[DealerPriceDB, str]
+class DealerPriceDealerDB(DealerBase):
+    dealerprice: DealerPriceDB
+    state: str = None
 
     class Config:
         orm_mode = True
