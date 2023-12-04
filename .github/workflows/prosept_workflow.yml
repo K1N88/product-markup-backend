@@ -1,7 +1,7 @@
 name: prosept_app
 
 on:
-  pull_request:
+  push:
     branches: [ "dev" ]
 
 permissions:
