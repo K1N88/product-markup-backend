@@ -27,7 +27,7 @@ async def get_all_dealer_price(
 @router.get(
     '/{dealer_id}',
     response_model=Page[DealerPriceDealerDB],
-    response_model_exclude_none=True,
+    response_model_exclude_none=False,
     dependencies=[Depends(current_user)]
 )
 async def get_dealer_price(
