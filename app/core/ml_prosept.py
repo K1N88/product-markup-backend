@@ -1,22 +1,28 @@
 #  Импорт библиотек
-import pandas as pd
-import re
-
-from sentence_transformers import SentenceTransformer, util
 from datetime import datetime
-
+from re import split as splt
 import warnings
+
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+
+from app.core.setup_logger import setup_logger
+
+
 warnings.filterwarnings("ignore")
 
 
-def prosept_predict(product: list, dealerprice: list) -> list:
+logger = setup_logger()
 
+
+def prosept_predict(product: list, dealerprice: list) -> list:
     """
     product - список товаров, которые производит и распространяет заказчик;
     dealer - список дилеров;
     dealerprice - результат работы парсера площадок дилеров;
     productdealerkey - таблица матчинга товаров заказчика и товаров дилеров;
     """
+    logger.info('1')
 
     #  Преобразуем входные данные в DataFrame
     df_dealerprice = pd.DataFrame(dealerprice)
@@ -77,6 +83,7 @@ def prosept_predict(product: list, dealerprice: list) -> list:
     stop_words = stop_words_en.union(stop_words_ru)
 
     def clean_texts(texts):
+        logger.info('2')
 
         if not pd.isna(texts):
             # нижний регистр
@@ -110,10 +117,11 @@ def prosept_predict(product: list, dealerprice: list) -> list:
 
     #  Функция разделения слов
     def str_edit(res):
+        logger.info('3')
         if not pd.isna(res):
-            res = ' '.join(re.split(r"([A-Za-z][A-Za-z]*)", res))
-            #  res = ' '.join(re.split(r"\b[А-ЯЁ]([А-ЯЁ][А-ЯЁа-яё]*)",res))
-            res = ' '.join(re.split(r"([0-9][0-9]*)", res))
+            res = ' '.join(splt(r"([A-Za-z][A-Za-z]*)", res))
+            #  res = ' '.join(splt(r"\b[А-ЯЁ]([А-ЯЁ][А-ЯЁа-яё]*)",res))
+            res = ' '.join(splt(r"([0-9][0-9]*)", res))
             res = ' '.join(res.split()).lower()
         else:
             res = ''
@@ -122,6 +130,7 @@ def prosept_predict(product: list, dealerprice: list) -> list:
 
     #  Объединение двух функций очистки текста.
     def str_edit_clean(res):
+        logger.info('4')
         return clean_texts(str_edit(res))
 
     # В дальнейшем будем использовать функцию обработки текста str_edit_clean
@@ -134,6 +143,7 @@ def prosept_predict(product: list, dealerprice: list) -> list:
     columns = ['name', 'ozon_name', 'name_1c', 'wb_name']
 
     def t_fit_LaBSE(df, func, df_columns=['name']):
+        logger.info('5')
 
         df_tmp = df[df_columns[0]].apply(func)
 
@@ -150,6 +160,7 @@ def prosept_predict(product: list, dealerprice: list) -> list:
                                                             columns)
 
     def t_predict_LaBSE(txt):
+        logger.info('6')
         txt_embedding = model_LaBSE.encode(func(txt))
         return util.pytorch_cos_sim(txt_embedding, product_embedding_LaBSE)
 
@@ -168,7 +179,8 @@ def prosept_predict(product: list, dealerprice: list) -> list:
 
     #  Сохраним предсказания в.
 
-    def tens(res):    
+    def tens(res):
+        logger.info('7')
         return [res[0][s].item() for s in range(10)]
 
     df_res.loc[:, 'predict'] = top_k_matches
