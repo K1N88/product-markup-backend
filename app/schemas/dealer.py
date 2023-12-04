@@ -31,5 +31,8 @@ class DealerPriceDB(DealerPriceCreate):
         orm_mode = True
 
 
-class DealerPriceDealerDB(DealerPriceDB):
-    data: List[Tuple[DealerPriceDB, str]]
+class DealerPriceDealerDB(BaseModel):
+    data: Tuple[DealerPriceDB, str]
+
+    class Config:
+        orm_mode = True
