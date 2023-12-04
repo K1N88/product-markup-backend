@@ -6,6 +6,19 @@ from app.api.routers import main_router
 from app.core.config import settings
 from app.core.init_db import create_first_superuser
 
+import sentry_sdk
+
+
+sentry_sdk.init(
+    dsn="https://cda08122e16ff6d3f6ad7042d07f1a87@o4504084224933888.ingest.sentry.io/4506337137852416",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)
 
 origins = ["*"]
 
