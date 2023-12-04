@@ -1,8 +1,6 @@
 name: prosept_app
 
 on:
-  push:
-    branches: [ "dev" ]
   pull_request:
     branches: [ "dev" ]
 
@@ -23,6 +21,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f requirementsc.txt ]; then pip install -r requirementsc.txt; fi
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -75,5 +74,4 @@ jobs:
           cd infra/
           sudo docker-compose down
           sudo docker-compose up -d --build
-          sudo docker system prune
-          sudo docker image prune
+          sudo docker system prune --force
