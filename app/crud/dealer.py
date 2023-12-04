@@ -32,11 +32,9 @@ class CRUDDealerPrice(CRUDBase):
         session: AsyncSession
     ) -> Optional[List]:
         stmt = select(self.model, Dealer.name).\
-            where(self.model.dealer_id == dealer.id).\
-            select_from(self.model).\
-            join(Dealer, self.model.dealer_id == Dealer.id)
+            where(self.model.dealer_id == dealer.id)
         db_objs = await session.execute(stmt)
-        return db_objs.fetchall()
+        return db_objs.all()
 
 
 dealer_crud = CRUDDealer(Dealer)
