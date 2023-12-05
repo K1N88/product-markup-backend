@@ -62,12 +62,12 @@ class CRUDMarkup(CRUDBase):
             item.pop('_sa_instance_state')
             dealerprice_df.append(item)
 
-        logger.info(f'start predict')
+        logger.info('start predict')
         obj_in = prosept_predict(
             product=product_df,
             dealerprice=dealerprice_df,
         )
-        logger.info(f'finish predict')
+        logger.info('finish predict')
 
         count = 0
         db_objs = []
