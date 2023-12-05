@@ -83,5 +83,25 @@ class CRUDMarkup(CRUDBase):
         return message
 
 
+class CRUDStatistic(CRUDBase):
+
+    async def get_statistic(
+        self,
+        session: AsyncSession
+    ) -> Optional[List]:
+        stmt = select(self.model, Markup).join(Markup)
+        db_objs = await session.execute(stmt)
+        result = []
+        for item in db_objs:
+            statistic, markup = item
+            result.append(
+                {
+                    'statistic': statistic.__dict__,
+                    'markup': markup.__dict__,
+                }
+            )
+        return result
+
+
 markup_crud = CRUDMarkup(Markup)
-statistic_crud = CRUDBase(Statistic)
+statistic_crud = CRUDStatistic(Statistic)

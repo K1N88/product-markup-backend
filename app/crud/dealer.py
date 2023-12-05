@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional, List
 
 from sqlalchemy import select
@@ -13,7 +14,7 @@ class CRUDDealer(CRUDBase):
         self,
         obj_in,
         session: AsyncSession,
-    ) -> list[Dealer]:
+    ) -> List[Dealer]:
         db_objs = []
         for item in obj_in:
             obj_in_data = item.dict()
@@ -29,41 +30,69 @@ class CRUDDealerPrice(CRUDBase):
     async def get_all_products_by_dealer(
         self,
         dealer: Dealer,
-        session: AsyncSession
+        session: AsyncSession,
+        name: Optional[str] = None,
+        state: Optional[str] = None,
+        start_date: Optional[date] = None,
+        end_date: Optional[date] = None,
     ) -> Optional[List]:
         stmt = select(self.model, Dealer.name, Statistic.state).\
             join(Dealer).\
             outerjoin(Statistic).\
             filter(self.model.dealer_id == dealer.id)
+
+        if name:
+            stmt = stmt.filter(self.model.product_name.ilike(f'%{name}%'))
+        if state:
+            stmt = stmt.filter(Statistic.state == state)
+        if start_date:
+            stmt = stmt.filter(self.model.date >= start_date)
+        if end_date:
+            stmt = stmt.filter(self.model.date <= end_date)
+
         db_objs = await session.execute(stmt)
         result = []
         for item in db_objs:
-            price, name, state = item
+            price, dealer_name, status = item
             result.append(
                 {
                     'dealerprice': price.__dict__,
-                    'dealer': name,
-                    'state': state
+                    'dealer': dealer_name,
+                    'state': status
                 }
             )
         return result
 
     async def get_multi_products(
         self,
-        session: AsyncSession
+        session: AsyncSession,
+        name: Optional[str] = None,
+        state: Optional[str] = None,
+        start_date: Optional[date] = None,
+        end_date: Optional[date] = None,
     ) -> Optional[List]:
         stmt = select(self.model, Dealer.name, Statistic.state).\
             join(Dealer).\
             outerjoin(Statistic)
+
+        if name:
+            stmt = stmt.filter(self.model.product_name.ilike(f'%{name}%'))
+        if state:
+            stmt = stmt.filter(Statistic.state == state)
+        if start_date:
+            stmt = stmt.filter(self.model.date >= start_date)
+        if end_date:
+            stmt = stmt.filter(self.model.date <= end_date)
+
         db_objs = await session.execute(stmt)
         result = []
         for item in db_objs:
-            price, name, state = item
+            price, dealer_name, status = item
             result.append(
                 {
                     'dealerprice': price.__dict__,
-                    'dealer': name,
-                    'state': state
+                    'dealer': dealer_name,
+                    'state': status
                 }
             )
         return result

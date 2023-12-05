@@ -33,3 +33,11 @@ class StatisticDB(StatisticCreate):
 
     class Config:
         orm_mode = True
+
+
+class StatisticInfo(BaseModel):
+    statistic: StatisticDB
+    markup: MarkupDB
+
+    class Config:
+        orm_mode = True
