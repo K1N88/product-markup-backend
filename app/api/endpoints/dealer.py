@@ -6,7 +6,7 @@ from fastapi_pagination import Page, paginate
 
 from app.crud.dealer import dealer_crud
 from app.core.db import get_async_session
-from app.schemas.dealer import DealerDB
+from app.schemas.dealer import DealerCreate, DealerBase
 from app.core.user import current_user
 
 
@@ -15,7 +15,7 @@ router = APIRouter()
 
 @router.get(
     '/',
-    response_model=Page[DealerDB],
+    response_model=Page[DealerBase],
     dependencies=[Depends(current_user)]
 )
 async def get_all_dealers(session: AsyncSession = Depends(get_async_session)):
@@ -25,11 +25,11 @@ async def get_all_dealers(session: AsyncSession = Depends(get_async_session)):
 
 @router.post(
     '/',
-    response_model=List[DealerDB],
+    response_model=List[DealerBase],
     dependencies=[Depends(current_user)]
 )
 async def create_all_dealers(
-    data: List[DealerDB],
+    data: List[DealerCreate],
     session: AsyncSession = Depends(get_async_session)
 ):
     await dealer_crud.create_multi(data, session)
