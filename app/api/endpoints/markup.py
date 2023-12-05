@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_pagination import Page, paginate
 
@@ -18,7 +18,7 @@ router = APIRouter()
     dependencies=[Depends(current_user)]
 )
 async def get_recomendations(
-    session: AsyncSession = Depends(get_async_session)
+    session: AsyncSession = Depends(get_async_session),
 ):
     markup = await markup_crud.get_multi(session)
     return paginate(markup)
@@ -30,9 +30,11 @@ async def get_recomendations(
     dependencies=[Depends(current_user)]
 )
 async def create_recomendations(
-    session: AsyncSession = Depends(get_async_session)
+    session: AsyncSession = Depends(get_async_session),
+    background_tasks: BackgroundTasks = None
 ):
-    return await markup_crud.create_predict(session)
+    background_tasks.add_task(markup_crud.create_predict, session)
+    return {"message": "calcilated"}
 
 
 @router.get(
