@@ -30,7 +30,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(main_router, prefix='/api/v1')
+app.include_router(main_router)
 add_pagination(app)
 
 
