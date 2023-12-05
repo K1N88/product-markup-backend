@@ -34,7 +34,7 @@ async def create_recomendations(
     background_tasks: BackgroundTasks = None
 ):
     background_tasks.add_task(markup_crud.create_predict, session)
-    return {"message": "calcilated"}
+    return {"message": "calculating..."}
 
 
 @router.get(
