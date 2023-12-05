@@ -16,7 +16,6 @@ class DealerBase(DealerCreate):
 
 
 class DealerDB(BaseModel):
-    id: int
     dealer: str
 
     class Config:
@@ -39,9 +38,6 @@ class DealerPriceDB(DealerPriceCreate):
         orm_mode = True
 
 
-class DealerPriceDealerDB(DealerBase):
+class DealerPriceDealerDB(DealerDB):
     dealerprice: DealerPriceDB
     state: str = None
-
-    class Config:
-        orm_mode = True
