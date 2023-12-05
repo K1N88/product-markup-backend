@@ -4,15 +4,23 @@ from typing import Optional, List, Tuple
 from pydantic import BaseModel, Field
 
 
-class DealerBase(BaseModel):
-    dealer: str
+class DealerCreate(BaseModel):
+    name: str
+
+
+class DealerBase(DealerCreate):
+    id: int
 
     class Config:
         orm_mode = True
 
 
-class DealerDB(DealerBase):
+class DealerDB(BaseModel):
     id: int
+    dealer: str
+
+    class Config:
+        orm_mode = True
 
 
 class DealerPriceCreate(BaseModel):
