@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_pagination import Page, paginate
@@ -13,6 +15,34 @@ from app.api.validators import check_exists
 router = APIRouter()
 
 
+@router.post(
+    '/',
+    response_model=dict,
+    dependencies=[Depends(current_user)]
+)
+async def create_recomendations(
+    session: AsyncSession = Depends(get_async_session),
+    background_tasks: BackgroundTasks = None
+):
+    task_id = str(uuid4())
+    background_tasks.add_task(markup_crud.create_predict, session,
+                              task_id=task_id)
+    return {"message": 'Background task has been started', "task_id": task_id}
+
+
+@router.get(
+    '/status',
+    response_model=dict,
+    dependencies=[Depends(current_user)]
+)
+async def check_background_task_status(
+    task_id: str,
+    background_tasks: BackgroundTasks = None
+):
+    task_status = background_tasks.get_status(task_id)
+    return {"task_id": task_id, "status": task_status}
+
+
 @router.get(
     '/',
     response_model=Page[MarkupDB],
@@ -23,19 +53,6 @@ async def get_recomendations(
 ):
     markup = await markup_crud.get_multi(session)
     return paginate(markup)
-
-
-@router.post(
-    '/',
-    response_model=str,
-    dependencies=[Depends(current_user)]
-)
-async def create_recomendations(
-    session: AsyncSession = Depends(get_async_session),
-    background_tasks: BackgroundTasks = None
-):
-    background_tasks.add_task(markup_crud.create_predict, session)
-    return {"background_task": background_tasks.__dict__}
 
 
 @router.get(
