@@ -18,7 +18,7 @@ sentry_sdk.init(
 
 origins = ["*"]
 
-app = FastAPI(title=settings.app_title)
+app = FastAPI(title=settings.app_title, openapi_url="/api/v1/openapi.json")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
