@@ -17,7 +17,7 @@ sentry_sdk.init(
 
 origins = ["*"]
 
-app = FastAPI(title=settings.app_title)
+app = FastAPI(title=settings.app_title, root_path="/api/v1")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -25,7 +25,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(main_router, prefix='/api/v1')
+app.include_router(main_router)
 add_pagination(app)
 
 
