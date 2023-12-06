@@ -9,6 +9,6 @@ class ProductDealerKey(Base):
     dealer_id = Column(Integer, ForeignKey('dealer.id'))
     product_id = Column(Integer, ForeignKey('product.id'))
 
-    dealer = relationship('Dealer')
-    product = relationship('Product')
-    price = relationship('DealerPrice')
+    dealer = relationship('Dealer', back_populates='product_dealer_key')
+    product = relationship('Product', back_populates='product_dealer_key')
+    price = relationship('DealerPrice', back_populates='product_dealer_key')

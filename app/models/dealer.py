@@ -7,13 +7,13 @@ from app.core.db import Base
 class Dealer(Base):
     name = Column(String(100), unique=True, nullable=False)
 
-    dealer_price = relationship('DealerPrice')
-    product_dealer_key = relationship('ProductDealerKey')
+    price = relationship('DealerPrice', back_populates='dealer')
+    product_dealer_key = relationship('ProductDealerKey',
+                                       back_populates='dealer')
 
 
 class DealerPrice(Base):
-    product_key = Column(String(1000),
-                         nullable=False)
+    product_key = Column(String(1000), nullable=False)
     price = Column('цена', String(1000), nullable=False)
     product_url = Column('адрес страницы, откуда собраны данные', String(1000))
     product_name = Column('заголовок продаваемого товара', String(1000),
@@ -21,7 +21,8 @@ class DealerPrice(Base):
     date = Column('дата получения информации', Date, nullable=False)
     dealer_id = Column(Integer, ForeignKey('dealer.id'))
 
-    dealer = relationship('Dealer')
-    product_dealer_key = relationship('ProductDealerKey')
-    markup = relationship('Markup')
-    statistic = relationship('Statistic')
+    dealer = relationship('Dealer', back_populates='price')
+    product_dealer_key = relationship('ProductDealerKey',
+                                      back_populates='price')
+    markup = relationship('Markup', back_populates='price')
+    statistic = relationship('Statistic', back_populates='price')

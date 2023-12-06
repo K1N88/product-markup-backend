@@ -24,7 +24,9 @@ async def create_productdealerkey(
 
 @router.get("/", response_model=Page[ProductDealerKeyDB],
             dependencies=[Depends(current_user)])
-async def read_productdealerkey(session: AsyncSession = Depends(get_async_session)):
+async def read_productdealerkey(
+    session: AsyncSession = Depends(get_async_session)
+):
     productdealerkey = await productdealerkey_crud.get_multi(session)
     return paginate(productdealerkey)
 

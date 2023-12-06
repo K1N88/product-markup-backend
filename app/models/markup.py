@@ -20,9 +20,9 @@ class Markup(Base):
     queue = Column('очередь', Integer, nullable=False)
     quality = Column('качество рекомендации', Float, nullable=False)
 
-    statistic = relationship('Statistic')
-    dealer_price = relationship('DealerPrice')
-    product = relationship('Product')
+    statistic = relationship('Statistic', back_populates='markup_obj')
+    price = relationship('DealerPrice', back_populates='markup')
+    product = relationship('Product', back_populates='markup')
 
 
 class Statistic(Base):
@@ -32,5 +32,5 @@ class Statistic(Base):
     last_update = Column('дата обновления', DateTime, default=datetime.now)
     state = Column('статус разметки', Enum(Choice))
 
-    dealer_price = relationship('DealerPrice')
-    markup_obj = relationship('Markup')
+    price = relationship('DealerPrice', back_populates='statistic')
+    markup_obj = relationship('Markup', back_populates='statistic')

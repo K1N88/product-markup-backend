@@ -20,5 +20,6 @@ class Product(Base):
     wb_article_td = Column('артикул для Wildberries td', String(100))
     ym_article = Column('артикул для Яндекс.Маркета', String(100))
 
-    product_dealer_key = relationship('ProductDealerKey')
-    markup = relationship('Markup')
+    product_dealer_key = relationship('ProductDealerKey',
+                                      back_populates='product')
+    markup = relationship('Markup', back_populates='product')

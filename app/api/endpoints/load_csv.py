@@ -45,7 +45,7 @@ async def load_csv(
         logger.info(message)
     result.append(message)
 
-    with open('csv/marketing_dealerprice.csv', encoding='utf-8') as f:
+    with open('csv/marketing_dealerprice_dd.csv', encoding='utf-8') as f:
         reader = csv.reader(f, delimiter=';')
         next(reader)
         count = 0
