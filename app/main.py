@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
 
+from app.api.endpoints.user import router as user_router
 from app.api.routers import main_router
 from app.core.config import settings
 from app.core.init_db import create_first_superuser
@@ -17,7 +18,7 @@ sentry_sdk.init(
 
 origins = ["*"]
 
-app = FastAPI(title=settings.app_title, root_path="/api/v1")
+app = FastAPI(title=settings.app_title)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -25,7 +26,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(main_router)
+app.include_router(main_router, prefix='/api/v1')
+app.include_router(user_router)
 add_pagination(app)
 
 

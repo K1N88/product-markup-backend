@@ -11,7 +11,6 @@ from app.api.endpoints.statistic import router as statistic_router
 
 
 main_router = APIRouter()
-main_router.include_router(user_router, tags=['users'])
 
 main_router.include_router(dealer_router, prefix='/dealer', tags=['dealers'])
 main_router.include_router(product_router, prefix='/product',
