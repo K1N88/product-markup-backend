@@ -72,13 +72,13 @@ class CRUDMarkup(CRUDBase):
 
         count = 0
         db_objs = []
-        '''for item in tqdm(obj_in):
+        for item in tqdm(obj_in):
             # item["key"] = item.pop("id")
             db_obj = self.model(**item)
             db_objs.append(db_obj)
             session.add(db_obj)
             count += 1
-        await session.commit()'''
+        await session.commit()
         message = f'Создано {count} объектов {Markup}'
         logger.info(message)
         return message
