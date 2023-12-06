@@ -68,6 +68,7 @@ class CRUDMarkup(CRUDBase):
             dealerprice=dealerprice_df,
         )
         logger.info('finish predict')
+        logger.info(obj_in[:10])
 
         count = 0
         db_objs = []
