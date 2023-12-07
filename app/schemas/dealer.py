@@ -1,9 +1,10 @@
 from datetime import date
-from typing import Optional
+from typing import Optional, Union
 
 from pydantic import BaseModel, Field
 
 from app.schemas.product import ProductM
+from app.models.markup import Choice
 
 
 class DealerCreate(BaseModel):
@@ -42,5 +43,5 @@ class DealerPriceDB(DealerPriceCreate):
 
 class DealerPriceDealerDB(DealerDB):
     dealerprice: DealerPriceDB
-    state: str = None
+    state: Union[str, Choice, None] = None
     product: ProductM = None
