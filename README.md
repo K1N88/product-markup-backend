@@ -35,13 +35,13 @@ sudo docker-compose up -d --build
 
 ## стэк технологий
 
-Python==3.10
-Fastpi==0.78.0
-SQLAlchemy==1.4.36
-Alembic==1.7.7
-Fastapi-users==10.0.6
-Alembic==1.7.7
-Pydantic==1.10.12
-Gunicorn==21.2.0
-Nginx
-Sentry
+- Python==3.10
+- Fastpi==0.78.0
+- SQLAlchemy==1.4.36
+- Alembic==1.7.7
+- Fastapi-users==10.0.6
+- Alembic==1.7.7
+- Pydantic==1.10.12
+- Gunicorn==21.2.0
+- Nginx
+- Sentry
