@@ -1,13 +1,13 @@
 #  Импорт библиотек
 from datetime import datetime
 from re import split as splt
-import warnings
+from warnings import filterwarnings
 
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
 
-warnings.filterwarnings("ignore")
+filterwarnings("ignore")
 
 
 def prosept_predict(product: list, dealerprice: list) -> list:
@@ -100,8 +100,11 @@ def prosept_predict(product: list, dealerprice: list) -> list:
             texts = texts.replace(r'\bprosept\b', '')
 
             # удаление стоп-слов
-            texts = ' '.join([word for word in texts.split() if word not in stop_words])
-            # texts = texts.apply(lambda x: ' '.join([word for word in x.split() if word not in stop_words]))
+            texts = ' '.join(
+                [word for word in texts.split() if word not in stop_words]
+            )
+            # texts = texts.apply(lambda x: ' '.join([word for word
+            # in x.split() if word not in stop_words]))
         else:
             texts = ''
 
@@ -126,17 +129,19 @@ def prosept_predict(product: list, dealerprice: list) -> list:
     # В дальнейшем будем использовать функцию обработки текста str_edit_clean
     func = str_edit_clean
 
-    #  Загружаем предъобученную модель LaBSE, при первом запуске потреуется загрузить 1.8 Гб данных
+    # Загружаем предъобученную модель LaBSE, при первом запуске потреуется
+    # загрузить 1.8 Гб данных
     model_LaBSE = SentenceTransformer('LaBSE')
 
-    #  В качестве исходного вектора продуктов используем все столбцы с наименованием продукции
+    # В качестве исходного вектора продуктов используем все столбцы
+    # с наименованием продукции
     columns = ['name', 'ozon_name', 'name_1c', 'wb_name']
 
     def t_fit_LaBSE(df, func, df_columns=['name']):
         df_tmp = df[df_columns[0]].apply(func)
 
-        if len(df_columns)>1:
-            for i in range(1,len(df_columns)):
+        if len(df_columns) > 1:
+            for i in range(1, len(df_columns)):
                 df_tmp = df_tmp + ' ' + df[df_columns[i]].apply(func)
 
         model = model_LaBSE.encode(df_tmp)
@@ -158,7 +163,7 @@ def prosept_predict(product: list, dealerprice: list) -> list:
     n = 10
     top_k_matches = []
     top_k_quality = []
-    for i in range(df_predict_LaBSE.shape[0]): 
+    for i in range(df_predict_LaBSE.shape[0]):
         quality, indices = df_predict_LaBSE.iloc[i].topk(n)
         #  print(rank)
         top_k_matches.append(indices)

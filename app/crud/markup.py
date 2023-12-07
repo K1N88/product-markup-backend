@@ -8,7 +8,7 @@ from app.crud.base import CRUDBase
 from app.crud.dealer import dealerprice_crud
 from app.crud.product import product_crud
 from app.models import Markup, Statistic, DealerPrice
-from app.core.ml_prosept import prosept_predict
+from app.core.ml_prosept_vector import prosept_predict
 from app.core.setup_logger import setup_logger
 
 
@@ -68,12 +68,12 @@ class CRUDMarkup(CRUDBase):
             dealerprice=dealerprice_df,
         )
         logger.info('finish predict')
-        logger.info(obj_in[:10])
+        # logger.info(obj_in[:10])
 
         count = 0
         db_objs = []
         for item in tqdm(obj_in):
-            # item["key"] = item.pop("id")
+            item["key"] = item.pop("id")
             db_obj = self.model(**item)
             db_objs.append(db_obj)
             session.add(db_obj)
