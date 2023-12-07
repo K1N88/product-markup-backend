@@ -7,6 +7,7 @@ from app.crud.markup import statistic_crud
 from app.core.db import get_async_session
 from app.schemas.markup import StatisticCreate, StatisticInfo, StatisticDB
 from app.core.user import current_user
+from app.api.validators import check_exists
 
 
 router = APIRouter()
@@ -34,3 +35,16 @@ async def create_statistic(
     session: AsyncSession = Depends(get_async_session),
 ):
     return await statistic_crud.create(product_in, session)
+
+
+@router.delete('/{statistic_id}', response_model=StatisticDB,
+               dependencies=[Depends(current_user)])
+async def delete_productdealerkey(
+        statistic_id: int,
+        session: AsyncSession = Depends(get_async_session),
+):
+    statistic = await check_exists(
+        statistic_id, session, statistic_crud
+    )
+    statistic = await statistic_crud.remove(statistic, session)
+    return statistic
