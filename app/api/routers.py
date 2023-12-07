@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 
-from app.api.endpoints.user import router as user_router
 from app.api.endpoints.dealer import router as dealer_router
 from app.api.endpoints.dealerprice import router as dealerprice_router
 from app.api.endpoints.product import router as product_router
