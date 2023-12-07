@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.base import CRUDBase
 from app.crud.dealer import dealerprice_crud
 from app.crud.product import product_crud
-from app.models import Markup, Statistic, DealerPrice
+from app.models import Markup, Statistic, DealerPrice, Product
 from app.core.ml_prosept_vector import prosept_predict
 from app.core.setup_logger import setup_logger
 
@@ -35,13 +35,22 @@ class CRUDMarkup(CRUDBase):
         self,
         dealer_price: DealerPrice,
         session: AsyncSession
-    ) -> Optional[List[Markup]]:
-        db_objs = await session.execute(
-            select(self.model)
-            .where(self.model.key == dealer_price.id)
-            .order_by(self.model.queue)
-        )
-        return db_objs.scalars().all()
+    ) -> Optional[List]:
+        stmt = select(self.model, Product).\
+            where(self.model.key == dealer_price.id).\
+            join(Product).\
+            order_by(self.model.queue)
+        db_objs = await session.execute(stmt)
+        result = []
+        for item in db_objs:
+            markup, product = item
+            result.append(
+                {
+                    'markup': markup.__dict__,
+                    'product': product.__dict__,
+                }
+            )
+        return result
 
     async def create_predict(
         self,

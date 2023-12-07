@@ -34,3 +34,11 @@ class ProductDB(ProductBase):
 
     class Config:
         orm_mode = True
+
+
+class ProductM(BaseModel):
+    article: str
+    name: Optional[str]
+
+    class Config:
+        orm_mode = True

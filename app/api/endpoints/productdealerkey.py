@@ -13,7 +13,7 @@ from app.api.validators import check_exists
 router = APIRouter()
 
 
-@router.post("/", response_model=ProductDealerKeyDB, 
+@router.post("/", response_model=ProductDealerKeyDB,
              dependencies=[Depends(current_user)])
 async def create_productdealerkey(
     product_in: ProductDealerKeyCreate,
