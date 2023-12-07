@@ -5,7 +5,7 @@ from fastapi_pagination import Page, paginate
 from app.crud.markup import markup_crud
 from app.crud.dealer import dealerprice_crud
 from app.core.db import get_async_session
-from app.schemas.markup import MarkupDB
+from app.schemas.markup import MarkupDB, MarkupProduct
 from app.core.user import current_user
 from app.api.validators import check_exists
 
@@ -40,7 +40,7 @@ async def get_recomendations(
 
 @router.get(
     '/{dealer_price_id}',
-    response_model=Page[MarkupDB],
+    response_model=Page[MarkupProduct],
     response_model_exclude_none=True,
     dependencies=[Depends(current_user)]
 )

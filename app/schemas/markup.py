@@ -4,6 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 from app.models.markup import Choice
+from app.schemas.product import ProductM
 
 
 class MarkupCreate(BaseModel):
@@ -38,6 +39,14 @@ class StatisticDB(StatisticCreate):
 class StatisticInfo(BaseModel):
     statistic: StatisticDB
     markup: MarkupDB
+
+    class Config:
+        orm_mode = True
+
+
+class MarkupProduct(BaseModel):
+    markup: MarkupDB
+    product: ProductM
 
     class Config:
         orm_mode = True

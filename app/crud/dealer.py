@@ -37,9 +37,9 @@ class CRUDDealerPrice(CRUDBase):
         end_date: Optional[date] = None,
     ) -> Optional[List]:
         stmt = select(self.model, Dealer.name, Statistic.state).\
+            where(self.model.dealer_id == dealer.id).\
             join(Dealer).\
-            outerjoin(Statistic).\
-            filter(self.model.dealer_id == dealer.id)
+            outerjoin(Statistic)
 
         if name:
             stmt = stmt.filter(self.model.product_name.ilike(f'%{name}%'))
