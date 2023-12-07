@@ -37,6 +37,7 @@ class ProductDB(ProductBase):
 
 
 class ProductM(BaseModel):
+    id: int
     article: str
     name: Optional[str]
 
