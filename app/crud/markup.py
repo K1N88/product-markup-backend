@@ -103,8 +103,6 @@ class CRUDStatistic(CRUDBase):
     ):
         stmt = select(self.model, Markup).join(Markup)
         db_objs = await session.execute(stmt)
-        print(db_objs)
-        result = {}
         yes = 0
         no = 0
         hold = 0
@@ -123,8 +121,12 @@ class CRUDStatistic(CRUDBase):
             for i in db:
                 hold += 1
         total = yes + no + hold
-        result ={'yes': yes, 'no': no, 'hold': hold, 'total': total}
-        
+        result = [{
+            'yes': yes,
+            'no': no,
+            'hold': hold,
+            'total': total
+        }]
         return result
 
 
