@@ -4,6 +4,7 @@ from typing import Optional, Union
 from pydantic import BaseModel, Field
 
 from app.schemas.product import ProductM
+from app.schemas.productdealerkey import ProductDealerKeyBase
 from app.models.markup import Choice
 
 
@@ -45,3 +46,4 @@ class DealerPriceDealerDB(DealerDB):
     dealerprice: DealerPriceDB
     state: Union[str, Choice, None] = None
     product: ProductM = None
+    productdealerkey: ProductDealerKeyBase = None

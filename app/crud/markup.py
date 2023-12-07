@@ -48,8 +48,8 @@ class CRUDMarkup(CRUDBase):
             markup, product = item
             result.append(
                 {
-                    'markup': markup.__dict__,
-                    'product': product.__dict__,
+                    'markup': markup,
+                    'product': product,
                 }
             )
         return result
