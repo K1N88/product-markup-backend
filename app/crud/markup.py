@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.base import CRUDBase
 from app.crud.dealer import dealerprice_crud
 from app.crud.product import product_crud
-from app.models import Markup, Statistic, DealerPrice, Product, Statistic
+from app.models import Markup, Statistic, DealerPrice, Product
 from app.core.ml_prosept_vector import prosept_predict
 from app.core.setup_logger import setup_logger
 from app.models.markup import Choice
