@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.markup import statistic_crud
 from app.core.db import get_async_session
 from app.schemas.markup import StatisticCreate, StatisticInfo, StatisticDB
-from app.core.user import current_user
+from app.core.user import current_user, current_superuser
 from app.api.validators import check_exists
 
 
@@ -38,8 +38,8 @@ async def create_statistic(
 
 
 @router.delete('/{statistic_id}', response_model=StatisticDB,
-               dependencies=[Depends(current_user)])
-async def delete_productdealerkey(
+               dependencies=[Depends(current_superuser)])
+async def delete_statistic_id(
         statistic_id: int,
         session: AsyncSession = Depends(get_async_session),
 ):
