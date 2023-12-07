@@ -11,7 +11,14 @@ class ProductDealerKeyCreate(ProductDealerKeyBase):
     product_id: int
 
 
-class ProductDealerKeyDB(ProductDealerKeyBase):
+class ProductDealerKeyDB(ProductDealerKeyCreate):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class ProductDealerKeyBase(BaseModel):
     id: int
 
     class Config:
