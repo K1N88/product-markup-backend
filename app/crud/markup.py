@@ -1,4 +1,3 @@
-from itertools import count
 from typing import Optional, List
 
 from tqdm import tqdm
@@ -108,15 +107,18 @@ class CRUDStatistic(CRUDBase):
         hold = 0
         for item in db_objs:
             statistic, markup = item
-            f = select(Statistic).where(Statistic.markup == statistic.markup, Statistic.state == Choice.YES)
+            f = select(Statistic).where(Statistic.markup == statistic.markup,
+                                        Statistic.state == Choice.YES)
             db = await session.execute(f)
             for i in db:
                 yes += 1
-            f = select(Statistic).where(Statistic.markup == statistic.markup, Statistic.state == Choice.NO)
+            f = select(Statistic).where(Statistic.markup == statistic.markup,
+                                        Statistic.state == Choice.NO)
             db = await session.execute(f)
             for i in db:
                 no += 1
-            f = select(Statistic).where(Statistic.markup == statistic.markup, Statistic.state == Choice.HOLD)
+            f = select(Statistic).where(Statistic.markup == statistic.markup,
+                                        Statistic.state == Choice.HOLD)
             db = await session.execute(f)
             for i in db:
                 hold += 1

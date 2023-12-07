@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.core.setup_logger import setup_logger
-from app.models import Dealer, DealerPrice, Product  # ProductDealerKey
+from app.models import Dealer, DealerPrice, Product
 
 
 logger = setup_logger()
@@ -103,27 +103,3 @@ async def load_csv(
     result.append(message)
 
     return result
-
-'''
-    with open('csv/marketing_productdealerkey.csv', encoding='utf-8') as f:
-        reader = csv.reader(f, delimiter=';')
-        next(reader)
-        count = 0
-        for row in tqdm(reader):
-            try:
-                id, key, dealer_id, product_id = row
-                db_obj = ProductDealerKey(
-                    id=int(id),
-                    key=key,
-                    dealer_id=int(dealer_id),
-                    product_id=int(product_id),
-                )
-                session.add(db_obj)
-                await session.commit()
-                count += 1
-            except Exception as error:
-                logger.error(f'сбой {error} при сохранении {row} в модель {ProductDealerKey}', exc_info=True)
-        message = f'количество объектов {ProductDealerKey} {count}'
-        logger.info(message)
-    result.append(message)
-    '''
