@@ -37,8 +37,10 @@ class StatisticDB(StatisticCreate):
 
 
 class StatisticInfo(BaseModel):
-    statistic: StatisticDB
-    markup: MarkupDB
+    yes: int
+    no: int
+    hold: int
+    total: int
 
     class Config:
         orm_mode = True

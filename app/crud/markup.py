@@ -1,3 +1,4 @@
+from itertools import count
 from typing import Optional, List
 
 from tqdm import tqdm
@@ -7,9 +8,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.base import CRUDBase
 from app.crud.dealer import dealerprice_crud
 from app.crud.product import product_crud
-from app.models import Markup, Statistic, DealerPrice, Product
+from app.models import Markup, Statistic, DealerPrice, Product, Statistic
 from app.core.ml_prosept_vector import prosept_predict
 from app.core.setup_logger import setup_logger
+from app.models.markup import Choice
 
 
 logger = setup_logger()
@@ -98,18 +100,33 @@ class CRUDStatistic(CRUDBase):
     async def get_statistic(
         self,
         session: AsyncSession
-    ) -> Optional[List]:
+    ):
         stmt = select(self.model, Markup).join(Markup)
         db_objs = await session.execute(stmt)
-        result = []
+        yes = 0
+        no = 0
+        hold = 0
         for item in db_objs:
             statistic, markup = item
-            result.append(
-                {
-                    'statistic': statistic.__dict__,
-                    'markup': markup.__dict__,
-                }
-            )
+            f = select(Statistic).where(Statistic.markup == statistic.markup, Statistic.state == Choice.YES)
+            db = await session.execute(f)
+            for i in db:
+                yes += 1
+            f = select(Statistic).where(Statistic.markup == statistic.markup, Statistic.state == Choice.NO)
+            db = await session.execute(f)
+            for i in db:
+                no += 1
+            f = select(Statistic).where(Statistic.markup == statistic.markup, Statistic.state == Choice.HOLD)
+            db = await session.execute(f)
+            for i in db:
+                hold += 1
+        total = yes + no + hold
+        result = [{
+            'yes': yes,
+            'no': no,
+            'hold': hold,
+            'total': total
+        }]
         return result
 
 
