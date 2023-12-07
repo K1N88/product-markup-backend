@@ -5,7 +5,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
-from app.models import Dealer, DealerPrice, Statistic
+from app.models import (Dealer, DealerPrice, Statistic, ProductDealerKey,
+                        Product)
 
 
 class CRUDDealer(CRUDBase):
@@ -36,10 +37,13 @@ class CRUDDealerPrice(CRUDBase):
         start_date: Optional[date] = None,
         end_date: Optional[date] = None,
     ) -> Optional[List]:
-        stmt = select(self.model, Dealer.name, Statistic.state).\
+        stmt = select(self.model, Dealer.name, Statistic.state, Product).\
             where(self.model.dealer_id == dealer.id).\
             join(Dealer).\
-            outerjoin(Statistic)
+            outerjoin(Statistic).\
+            outerjoin(ProductDealerKey,
+                      self.model.id == ProductDealerKey.key).\
+            outerjoin(Product, ProductDealerKey.product_id == Product.id)
 
         if name:
             stmt = stmt.filter(self.model.product_name.ilike(f'%{name}%'))
@@ -53,12 +57,13 @@ class CRUDDealerPrice(CRUDBase):
         db_objs = await session.execute(stmt)
         result = []
         for item in db_objs:
-            price, dealer_name, status = item
+            price, dealer_name, status, product = item
             result.append(
                 {
                     'dealerprice': price.__dict__,
                     'dealer': dealer_name,
-                    'state': status
+                    'state': status,
+                    'product': product
                 }
             )
         return result
@@ -71,9 +76,12 @@ class CRUDDealerPrice(CRUDBase):
         start_date: Optional[date] = None,
         end_date: Optional[date] = None,
     ) -> Optional[List]:
-        stmt = select(self.model, Dealer.name, Statistic.state).\
+        stmt = select(self.model, Dealer.name, Statistic.state, Product).\
             join(Dealer).\
-            outerjoin(Statistic)
+            outerjoin(Statistic).\
+            outerjoin(ProductDealerKey,
+                      self.model.id == ProductDealerKey.key).\
+            outerjoin(Product, ProductDealerKey.product_id == Product.id)
 
         if name:
             stmt = stmt.filter(self.model.product_name.ilike(f'%{name}%'))
@@ -87,12 +95,13 @@ class CRUDDealerPrice(CRUDBase):
         db_objs = await session.execute(stmt)
         result = []
         for item in db_objs:
-            price, dealer_name, status = item
+            price, dealer_name, status, product = item
             result.append(
                 {
                     'dealerprice': price.__dict__,
                     'dealer': dealer_name,
-                    'state': status
+                    'state': status,
+                    'product': product
                 }
             )
         return result

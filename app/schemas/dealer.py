@@ -1,7 +1,9 @@
 from datetime import date
-from typing import Optional, List, Tuple
+from typing import Optional
 
 from pydantic import BaseModel, Field
+
+from app.schemas.product import ProductM
 
 
 class DealerCreate(BaseModel):
@@ -41,3 +43,4 @@ class DealerPriceDB(DealerPriceCreate):
 class DealerPriceDealerDB(DealerDB):
     dealerprice: DealerPriceDB
     state: str = None
+    product: ProductM = None
